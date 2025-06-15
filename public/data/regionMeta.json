@@ -1,0 +1,18 @@
+{
+  "Marmaris": {
+    "isTouristic": true,
+    "isCrowded": true,
+    "notes": "High parking demand during summer",
+    "defaultParkingChance": "low"
+  },
+  "Taksim": {
+    "isTouristic": true,
+    "isCrowded": true,
+    "defaultParkingChance": "low"
+  },
+  "Olympos": {
+    "isTouristic": true,
+    "isCrowded": false,
+    "defaultParkingChance": "medium"
+  }
+}

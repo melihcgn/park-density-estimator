@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "@/components/theme-provider";
+import 'leaflet/dist/leaflet.css';
+import { ClientThemeProvider } from "@/components/client-theme-provider";
+import { DateTimeProvider } from "@/context/DateTimeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +30,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
-        {children}
+        <ClientThemeProvider>
+          <DateTimeProvider><div>
+            <Navbar></Navbar>
+          </div>
+            {children}
+          </DateTimeProvider>
+        </ClientThemeProvider>
+
       </body>
     </html>
   );

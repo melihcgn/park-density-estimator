@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "531. Sokak",
+        "prediction": "high"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [28.2740, 36.8528],
+          [28.2750, 36.8529]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "132. Sokak",
+        "prediction": "medium"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [28.2760, 36.8530],
+          [28.2770, 36.8531]
+        ]
+      }
+    }
+  ]
+}
