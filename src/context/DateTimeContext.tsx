@@ -10,7 +10,7 @@ type DateTimeContextType = {
 const DateTimeContext = createContext<DateTimeContextType | undefined>(undefined);
 
 export const DateTimeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
+  const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(new Date());
 
   return (
     <DateTimeContext.Provider value={{ selectedDateTime, setSelectedDateTime }}>
