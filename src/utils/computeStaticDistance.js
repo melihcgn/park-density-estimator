@@ -3,7 +3,7 @@ import * as turf from '@turf/turf';
 const marmarisCenter = turf.point([28.2742, 36.8529]);
 
 let cachedPOIs = null;
-
+let cachedBBOX = null;
 async function fetchPOIs(bbox, key, value) {
   const [south, west, north, east] = bbox;
   const query = `
@@ -56,27 +56,31 @@ function countNearbyToLine(roadLine, pois, radius) {
 }
 
 export async function computeStaticDistance(feature, bbox) {
+if (!cachedBBOX || JSON.stringify(bbox) !== JSON.stringify(cachedBBOX)) {
+    cachedPOIs = null;
+    cachedBBOX = bbox;
+    console.log("cachedBBOX: ", cachedBBOX)
+  }
   if (!cachedPOIs) {
     const bars = await fetchPOIs(bbox, 'amenity', 'bar');
     const restaurants = await fetchPOIs(bbox, 'amenity', 'restaurant');
     const buildings = await fetchPOIsBuildings(bbox);
     const attractions = await fetchPOIs(bbox, 'tourism', 'attraction');
-
+    console.log("selam bars: ", bars)
     cachedPOIs = { bars, restaurants, buildings, attractions };
   }
-
   const { bars, restaurants, buildings, attractions } = cachedPOIs;
 
   const center = getRoadCenter(feature);
-  const distanceToCenter = turf.distance(center, marmarisCenter, { units: 'meters' });
+  let distanceToCenter = turf.distance(center, marmarisCenter, { units: 'meters' });
 
   const roadLine = turf.lineString(feature.geometry.coordinates);
-const roadLength = turf.length(roadLine, { units: 'kilometers' }) * 1000;
+  const roadLength = turf.length(roadLine, { units: 'kilometers' }) * 1000;
 
-const numBars = countNearbyToLine(roadLine, bars, 100);
-const numRestaurants = countNearbyToLine(roadLine, restaurants, 100);
-const numBuildings = countNearbyToLine(roadLine, buildings, 100);
-const nearAttraction = countNearbyToLine(roadLine, attractions, 150) > 0;
+  const numBars = countNearbyToLine(roadLine, bars, 100);
+  const numRestaurants = countNearbyToLine(roadLine, restaurants, 100);
+  const numBuildings = countNearbyToLine(roadLine, buildings, 100);
+  const nearAttraction = countNearbyToLine(roadLine, attractions, 150) > 0;
 
   return {
     roadId: feature.id || feature.properties['@id'] || '',

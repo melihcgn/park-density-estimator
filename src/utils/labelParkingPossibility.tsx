@@ -1,36 +1,52 @@
 export function scoreRoadForParking(data, selectedDateTime: Date) {
   let score = 0;
 
-  // Base static features
-  score += Math.min(data.length_m / 100, 10);
-  score += Math.max(0, 10 - data.distanceToMarmarisCenter_m / 200);
-  score -= Math.min(data.numBuildings_100m / 20, 10);
-  if (data.nearAttraction) score += 5;
-  score += Math.min(data.numBars_100m + data.numRestaurants_100m, 5);
+  // --- Static features ---
+  score -= Math.min(data.length_m / 200, 10); // long roads are better
+  // Distance to center skipped for now
 
-  // --- New: Dynamic time-based adjustments ---
+  // Buildings = competition
+  score += Math.min(data.numBuildings_100m / 5, 10);
+
+  // Attractions help
+  if (data.nearAttraction) score += 5;
+
+  // Bars/restaurants help (especially for night parking)
+  const totalCommercial = data.numBars_100m + data.numRestaurants_100m;
+  score += Math.min(totalCommercial, 5);
+
+  // --- Dynamic features ---
   const hour = selectedDateTime.getHours();
-  const day = selectedDateTime.getDay(); // 0 (Sunday) to 6 (Saturday)
+  const day = selectedDateTime.getDay();
   const isWeekend = (day === 0 || day === 6);
   const isNight = hour >= 20 || hour <= 5;
   const isEvening = hour >= 18 && hour < 20;
 
-  // Penalty for likely crowding
-  if (isWeekend) score -= 2;
-  if (isWeekend && isNight) score -= 2; // More demand & competition
-  else if (isEvening) score -= 1;
+  // Weekend and evening penalty (more competition)
+  if (isWeekend) score += 2;
+  if (isWeekend && isNight) score += 2;
+  else if (isEvening) score += 1;
 
+  // Residential penalty
+  if (data.numBuildings_100m > 30 && totalCommercial === 0) {
+    score += 3;
+    if (isNight || isEvening) score += 2;
+  }
+
+  // Commercial mix bonus
+  if (totalCommercial > 0 && data.numBuildings_100m > 10) {
+    if (isNight) score += 2;
+  }
+
+  // Clamp score
+  score = Math.max(Math.min(score, 20), 0);
+  console.log("score of ",data.name, ": ", score ,", nbdngs, nbars, nres", data.numBuildings_100m, " ", data.numBars_100m, " ",data.numRestaurants_100m)
   return Math.round(score * 10) / 10;
 }
 
-function labelParkingPossibility(score) {
-  if (score >= 15) return 'High Parking Potential';
-  if (score >= 8) return 'Medium Parking Potential';
-  return 'Low Parking Potential';
+export function getColor(totalScore) {
+  if (totalScore >= 12) return 'red';        // Very difficult to find parking
+  if (totalScore >= 5) return 'orange';      // Moderate
+  return 'blue';                             // Easier to find parking
 }
 
-export function getColor(totalScore) {
-  if (totalScore >= 15) return 'red';
-  if (totalScore >= 8) return 'orange';
-  return 'blue';
-}

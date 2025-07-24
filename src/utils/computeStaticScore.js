@@ -1,10 +1,8 @@
 import * as turf from '@turf/turf';
 
-const marmarisCenter = turf.point([28.2742, 36.8529]);
-
-function getDistanceToCenter(feature) {
+function getDistanceToCenter(feature, citycenter) {
   const centroid = turf.centroid(feature);
-  return turf.distance(centroid, marmarisCenter, { units: 'meters' });
+  return turf.distance(centroid, citycenter, { units: 'meters' });
 }
 
 async function fetchPOIs(bbox, key, value) {
@@ -21,8 +19,8 @@ async function fetchPOIs(bbox, key, value) {
   return elements.map((e) => turf.point([e.lon, e.lat]));
 }
 
-export async function computeStaticScore(feature, bbox) {
-  const distance = getDistanceToCenter(feature);
+export async function computeStaticScore(feature, bbox, citycenter) {
+  const distance = getDistanceToCenter(feature, citycenter );
   const bars = await fetchPOIs(bbox, 'amenity', 'bar');
   const restaurants = await fetchPOIs(bbox, 'amenity', 'restaurant');
   const buildings = await fetchPOIs(bbox, 'building', '*');

@@ -12,26 +12,38 @@ export default function Map() {
   const [roads, setRoads] = useState<any>(null);
   const [roadParkingData, setRoadParkingData] = useState<any>(null);
   const [roadColors, setRoadColors] = useState<Record<string, string>>({});
-  const {selectedDateTime} = useDateTime();
-  useEffect(() => {
-    // Load GeoJSON roads
-    fetch('/data/roads.json')
-      .then((res) => res.json())
-      .then((data) => setRoads(data));
+  const { selectedDateTime } = useDateTime();
 
-    // Load static data
-    fetch('/data/staticDistances.json')
-      .then((res) => res.json())
-      .then((data) => setRoadParkingData(data));
+  useEffect(() => {
+    async function loadData() {
+      // Load roads
+      const marmarisRoads = await fetch('/data/roads.json').then(res => res.json());
+      const cesmeRoads = await fetch('/data/cesme_roads.json').then(res => res.json());
+
+      // Merge roads
+      const combinedRoads = {
+        ...marmarisRoads,
+        features: [...marmarisRoads.features, ...cesmeRoads.features]
+      };
+      setRoads(combinedRoads);
+
+      // Load parking data
+      const marmarisData = await fetch('/data/staticDistances.json').then(res => res.json());
+
+      // Merge parking data
+      setRoadParkingData(marmarisData);
+    }
+
+    loadData();
   }, []);
 
   useEffect(() => {
-    if (!roads || !roadParkingData) return;
+    if (!roads || !roadParkingData || !selectedDateTime) return;
 
     const colors: Record<string, string> = {};
     for (const feature of roads.features) {
       const name = feature.properties?.name;
-      if (!name || !roadParkingData[name] || !selectedDateTime) continue;
+      if (!name || !roadParkingData[name]) continue;
 
       const data = roadParkingData[name];
       const score = scoreRoadForParking(data, selectedDateTime);
@@ -51,7 +63,6 @@ export default function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-
         <Marker position={defaultPosition}>
           <Popup>Marmaris!</Popup>
         </Marker>
@@ -70,7 +81,6 @@ export default function Map() {
             }}
           />
         )}
-
       </MapContainer>
     </div>
   );
