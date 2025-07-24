@@ -1,7 +1,10 @@
 import { convertOsmToGeoJSON } from "./osmToGeojson";
+import type { FeatureCollection, LineString } from "geojson";
 
-// src/lib/fetchStreetGeo.ts
-export async function fetchStreetGeo(name: string, bbox: [number,number,number,number]) {
+export async function fetchStreetGeo(
+  name: string,
+  bbox: [number, number, number, number]
+): Promise<FeatureCollection<LineString>> {
   const [minLat, minLng, maxLat, maxLng] = bbox;
   const query = `
     [out:json][timeout:30];
@@ -10,7 +13,11 @@ export async function fetchStreetGeo(name: string, bbox: [number,number,number,n
   `;
   const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
   const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch OSM data: ${res.statusText}`);
+  }
+
   const osm = await res.json();
-  console.log("osm: ", osm)
-  return convertOsmToGeoJSON(osm); // convert manually
+  return convertOsmToGeoJSON(osm);
 }

@@ -1,10 +1,7 @@
 import React from 'react'
 import { ModeToggle } from './mode-toggle'
 import { TypographyH1 } from './ui/typography'
-import { DatePicker } from './ui/datepicker'
-import DatePickerWrapper from './DatePickerWrapper'
 import { DateTimePickerDialog } from './ui/DateTimePickerDialog'
-import { useDateTime } from '@/context/DateTimeContext'
 
 export default function Navbar() {
   return (

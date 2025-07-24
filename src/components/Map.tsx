@@ -5,12 +5,13 @@ import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import { scoreRoadForParking, getColor } from '@/utils/labelParkingPossibility';
 import MapInfoBox from './ui/MapInfoBox';
 import { useDateTime } from '@/context/DateTimeContext';
-
+import { FeatureCollection, LineString } from 'geojson';
+import { RoadData } from '@/utils/labelParkingPossibility';
 const defaultPosition: [number, number] = [36.8529, 28.2742]; // Marmaris
 
 export default function Map() {
-  const [roads, setRoads] = useState<any>(null);
-  const [roadParkingData, setRoadParkingData] = useState<any>(null);
+  const [roads, setRoads] = useState<FeatureCollection<LineString> | null>(null);
+  const [roadParkingData, setRoadParkingData] = useState<Record<string, RoadData> | null>(null);
   const [roadColors, setRoadColors] = useState<Record<string, string>>({});
   const { selectedDateTime } = useDateTime();
 
@@ -72,7 +73,7 @@ export default function Map() {
             key={JSON.stringify(roadColors)} // triggers re-render when colors change
             data={roads}
             style={(feature) => {
-              const name = feature.properties?.name;
+              const name = feature?.properties?.name;
               const color = roadColors[name] || '#888';
               return {
                 color,

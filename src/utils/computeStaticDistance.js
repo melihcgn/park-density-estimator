@@ -43,11 +43,11 @@ function getRoadCenter(feature) {
   return turf.along(line, length / 2, { units: 'kilometers' });
 }
 
-function countNearby(center, pois, radius) {
-  return pois.filter(poi =>
-    turf.distance(center, poi, { units: 'meters' }) < radius
-  ).length;
-}
+// function countNearby(center, pois, radius) {
+//   return pois.filter(poi =>
+//     turf.distance(center, poi, { units: 'meters' }) < radius
+//   ).length;
+// }
 
 function countNearbyToLine(roadLine, pois, radius) {
   return pois.filter(poi =>

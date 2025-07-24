@@ -1,5 +1,13 @@
 import * as turf from '@turf/turf';
-import type { Feature, Geometry } from 'geojson';
+import type { Feature, Geometry, LineString  } from 'geojson';
+
+interface OverpassElement {
+    id: number;
+    lat: number;
+    lon: number;
+    tags?: Record<string, string>;
+}
+
 
 async function fetchPOIs(bbox: [number, number, number, number], key: string, value: string) {
     const [south, west, north, east] = bbox;
@@ -9,11 +17,12 @@ async function fetchPOIs(bbox: [number, number, number, number], key: string, va
     out;
   `;
     const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
-    const { elements } = await res.json();
+    const { elements }: { elements: OverpassElement[] } = await res.json();
+    console.log("elementss: ", elements)
     return elements.map(e => turf.point([e.lon, e.lat]));
 }
 
-export async function computeStaticScore(feature: any, bbox: [number, number, number, number]) {
+export async function computeStaticScore(feature: Feature<LineString>, bbox: [number, number, number, number]) {
     const distance = getDistanceToCenter(feature);
     const bars = await fetchPOIs(bbox, 'amenity', 'bar');
     const restaurants = await fetchPOIs(bbox, 'amenity', 'restaurant');

@@ -1,4 +1,18 @@
-export function scoreRoadForParking(data, selectedDateTime: Date) {
+export type RoadData = {
+  roadId: string;
+  name: string;
+  roadType: string;
+  centerLat: number;
+  centerLon: number;
+  length_m: number;
+  distanceToMarmarisCenter_m: number;
+  numBars_100m: number;
+  numRestaurants_100m: number;
+  numBuildings_100m: number;
+  nearAttraction: boolean;
+};
+
+export function scoreRoadForParking(data: RoadData, selectedDateTime: Date) {
   let score = 0;
 
   // --- Static features ---
@@ -44,7 +58,7 @@ export function scoreRoadForParking(data, selectedDateTime: Date) {
   return Math.round(score * 10) / 10;
 }
 
-export function getColor(totalScore) {
+export function getColor(totalScore: number) {
   if (totalScore >= 12) return 'red';        // Very difficult to find parking
   if (totalScore >= 5) return 'orange';      // Moderate
   return 'blue';                             // Easier to find parking
