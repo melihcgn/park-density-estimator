@@ -10,25 +10,19 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        script {
-          dockerImage = docker.build("my-next-app")
-        }
+        sh 'docker build -t my-next-app .'
       }
     }
 
     stage('Stop Previous Container') {
       steps {
-        script {
-          sh 'docker rm -f my-next-app-container || true'
-        }
+        sh 'docker rm -f my-next-app-container || true'
       }
     }
 
     stage('Run New Container') {
       steps {
-        script {
-          sh 'docker run -d -p 3000:3000 --name my-next-app-container my-next-app'
-        }
+        sh 'docker run -d -p 3000:3000 --name my-next-app-container my-next-app'
       }
     }
   }
