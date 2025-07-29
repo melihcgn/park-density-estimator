@@ -4,7 +4,6 @@ pipeline {
   stages {
     stage('Clone Repo') {
       steps {
-        // GitHub'dan projeyi klonla (Jenkins job ayarlarında repo tanımlıysa gerek yok)
         git 'https://github.com/melihcgn/park-density-estimator.git'
       }
     }
