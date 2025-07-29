@@ -4,7 +4,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # or 'master' or any branch you want to track
+      - master  # or 'master' or any branch you want to track
 
 jobs:
   build-and-push:
