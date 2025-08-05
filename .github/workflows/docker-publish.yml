@@ -21,9 +21,10 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-docker-${{ github.sha }}
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/package-lock.json', 'Dockerfile') }}
         restore-keys: |
           ${{ runner.os }}-docker-
+
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
