@@ -20,7 +20,7 @@ export function DatePicker({ date, onDateChange }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="flex flex-row gap-3">
+    <div className="flex flex-col md:flex-row gap-3">
       <Label htmlFor="date" className="px-1">
         Park edeceğin tarihi seç
       </Label>

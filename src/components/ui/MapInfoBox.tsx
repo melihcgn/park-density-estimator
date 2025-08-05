@@ -17,7 +17,7 @@ export default function MapInfoBox() {
     : 'Gerçek zamanlı park verisi gösteriliyor';
 
   return (
-    <div className="absolute top-14 right-4 bg-white/90 dark:bg-zinc-900/90 text-sm text-black dark:text-white px-4 py-2 rounded shadow-lg z-[1000]">
+    <div className="absolute top-14 right-4 bg-white/90 dark:bg-zinc-900/90 text-sm text-black dark:text-white px-4 py-2 rounded shadow-lg z-[50]">
       {displayText}
     </div>
   );

@@ -13,6 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { DatePicker } from "./datepicker";
 import { useDateTime } from "@/context/DateTimeContext";
+import { Calendar } from 'lucide-react'; 
 
 export function DateTimePickerDialog() {
   const { selectedDateTime, setSelectedDateTime } = useDateTime();
@@ -38,11 +39,21 @@ const handleReset = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Tarihli Park Verisini Seç</Button>
+        <div className="flex">
+          {/* Shown on md and larger screens */}
+          <Button variant="outline" className="hidden md:inline-flex">
+            Tarihli Park Verisini Seç
+          </Button>
+
+          {/* Shown only on smaller screens */}
+          <Button variant="outline" className="md:hidden">
+            <Calendar />
+          </Button>
+        </div>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="overflow-hidden">
         <DialogHeader>
-          <DialogTitle>Park Edilecek Tarihi ve Saati Seç</DialogTitle>
+          <DialogTitle className="overflow-hidden">Park Edilecek Tarihi ve Saati Seç</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4 mt-2">
@@ -53,7 +64,7 @@ const handleReset = () => {
             <select
               value={selectedHour}
               onChange={(e) => setSelectedHour(parseInt(e.target.value))}
-              className="border rounded px-2 py-1"
+              className="border bg-background shadow-xs border rounded px-2 py-1"
             >
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>

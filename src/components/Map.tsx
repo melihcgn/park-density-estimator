@@ -7,7 +7,20 @@ import MapInfoBox from './ui/MapInfoBox';
 import { useDateTime } from '@/context/DateTimeContext';
 import { FeatureCollection, LineString } from 'geojson';
 import { RoadData } from '@/utils/labelParkingPossibility';
-const defaultPosition: [number, number] = [36.8529, 28.2742]; // Marmaris
+import CurrentLocationMarker from './ui/CurrentLocation';
+import L from 'leaflet';
+
+const redIcon = L.icon({
+  iconUrl: '/red_marker_50x50.png', // public klasörüne koy
+  iconSize: [30, 30], // orijinali: [25, 41]
+  iconAnchor: [9, 28], // popup konumu için
+  popupAnchor: [0, -28],
+  shadowUrl: '/marker-shadow.png', // opsiyonel, varsayılan shadow
+  shadowSize: [41, 41],
+  shadowAnchor: [13, 41],
+});
+const marmarisPosition: [number, number] = [36.8529, 28.2742]; // Marmaris
+const cesmePosition: [number, number] = [38.3228, 26.3052];
 
 export default function Map() {
   const [roads, setRoads] = useState<FeatureCollection<LineString> | null>(null);
@@ -58,15 +71,19 @@ export default function Map() {
   return (
     <div className="h-full w-full">
       <MapInfoBox />
-      <MapContainer center={defaultPosition} zoom={13} className="h-full w-full z-0">
+      <MapContainer center={marmarisPosition} zoom={13} className="h-full w-full z-0">
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <Marker position={defaultPosition}>
-          <Popup>Marmaris!</Popup>
+        <Marker position={marmarisPosition} icon={redIcon}>
+          <Popup>Marmaris</Popup>
         </Marker>
+        <Marker position={cesmePosition} icon={redIcon}>
+          <Popup>Çeşme</Popup>
+        </Marker>
+        <CurrentLocationMarker />
 
         {roads && (
           <GeoJSON
