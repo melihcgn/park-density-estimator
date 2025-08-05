@@ -33,7 +33,6 @@ export default function Map() {
       // Load roads
       const marmarisRoads = await fetch('/data/roads.json').then(res => res.json());
       const cesmeRoads = await fetch('/data/cesme_roads.json').then(res => res.json());
-      // deneme
       // Merge roads
       const combinedRoads = {
         ...marmarisRoads,
