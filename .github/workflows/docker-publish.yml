@@ -17,8 +17,11 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+    - name: Set Docker tag
+      run: echo "DOCKER_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+    
     - name: Build Docker image
-      run: docker build -t mcagan/haritapark:clean-1 .
-
+      run: docker build -t mcagan/haritapark:${{ env.DOCKER_TAG }} .
+    
     - name: Push Docker image
-      run: docker push mcagan/haritapark:clean-1
+      run: docker push mcagan/haritapark:${{ env.DOCKER_TAG }}
