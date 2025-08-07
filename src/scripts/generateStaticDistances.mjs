@@ -16,10 +16,10 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const run = async () => {
   const staticDistances = {};
-  const total = marmarisRoads.features.length;
-  let index = 0;
+  //const total = marmarisRoads.features.length;
+  //let index = 0;
   for (const feature of marmarisRoads.features) {
-    index++;
+    //index++;
     const name = feature?.properties?.name;
     if (!name) continue;
     //console.log(`🔄 Processing ${index} of ${total}: ${name} in marmaris`);
@@ -28,12 +28,12 @@ const run = async () => {
   }
   //console.log('⏳ Waiting before processing Çeşme...');
 await sleep(15000); // wait 2 seconds to reduce risk of Overpass blocking
-  const cesme_total = cesmeRoads.features.length;
+  //const cesme_total = cesmeRoads.features.length;
   //console.log("cesmeRoads: ", cesme_total)
 
-  let idx = 0;
+  //let idx = 0;
   for (const feature of cesmeRoads.features) {
-    idx++;
+    //idx++;
     const name = feature?.properties?.name;
     if (!name) continue;
     //console.log(`🔄 Processing ${idx} of ${cesme_total}: ${name} in cesme`);
