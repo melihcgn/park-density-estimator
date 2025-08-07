@@ -22,21 +22,21 @@ const run = async () => {
     index++;
     const name = feature?.properties?.name;
     if (!name) continue;
-    console.log(`🔄 Processing ${index} of ${total}: ${name} in marmaris`);
+    //console.log(`🔄 Processing ${index} of ${total}: ${name} in marmaris`);
     const distanceParts = await computeStaticDistance(feature, marmaris_BBOX, marmarisCenter);
     staticDistances[name] = distanceParts;
   }
-  console.log('⏳ Waiting before processing Çeşme...');
+  //console.log('⏳ Waiting before processing Çeşme...');
 await sleep(15000); // wait 2 seconds to reduce risk of Overpass blocking
   const cesme_total = cesmeRoads.features.length;
-  console.log("cesmeRoads: ", cesme_total)
+  //console.log("cesmeRoads: ", cesme_total)
 
   let idx = 0;
   for (const feature of cesmeRoads.features) {
     idx++;
     const name = feature?.properties?.name;
     if (!name) continue;
-    console.log(`🔄 Processing ${idx} of ${cesme_total}: ${name} in cesme`);
+    //console.log(`🔄 Processing ${idx} of ${cesme_total}: ${name} in cesme`);
     const distanceParts = await computeStaticDistance(feature, cesme_BBOX, cesmeCenter);
     staticDistances[name] = distanceParts;
   }
@@ -47,7 +47,7 @@ await sleep(15000); // wait 2 seconds to reduce risk of Overpass blocking
     'utf8'
   );
 
-  console.log('✅ Static Distances saved to /public/data/staticDistances.json');
+  //console.log('✅ Static Distances saved to /public/data/staticDistances.json');
 };
 
 run();

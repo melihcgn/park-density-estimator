@@ -54,7 +54,7 @@ export function scoreRoadForParking(data: RoadData, selectedDateTime: Date) {
 
   // Clamp score
   score = Math.max(Math.min(score, 20), 0);
-  console.log("score of ",data.name, ": ", score ,", nbdngs, nbars, nres", data.numBuildings_100m, " ", data.numBars_100m, " ",data.numRestaurants_100m)
+  //console.log("score of ",data.name, ": ", score ,", nbdngs, nbars, nres", data.numBuildings_100m, " ", data.numBars_100m, " ",data.numRestaurants_100m)
   return Math.round(score * 10) / 10;
 }
 

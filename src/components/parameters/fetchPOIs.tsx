@@ -18,7 +18,7 @@ async function fetchPOIs(bbox: [number, number, number, number], key: string, va
   `;
     const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
     const { elements }: { elements: OverpassElement[] } = await res.json();
-    console.log("elementss: ", elements)
+    //console.log("elementss: ", elements)
     return elements.map(e => turf.point([e.lon, e.lat]));
 }
 
