@@ -1,18 +1,18 @@
 # ---- Stage 1: Build ----
 FROM node:18-alpine AS builder
 
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy and install dependencies (cacheable step)
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev  # only install production dependencies
+RUN npm ci
 
-# Copy all source files
+# Now copy the rest of the app
 COPY . .
 
-# Build the Next.js app
+# Build the app
 RUN npm run build
-
 
 # ---- Stage 2: Run ----
 FROM node:18-alpine AS runner
