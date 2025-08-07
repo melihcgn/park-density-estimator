@@ -31,7 +31,7 @@ await sleep(15000); // wait 2 seconds to reduce risk of Overpass blocking
   //const cesme_total = cesmeRoads.features.length;
   //console.log("cesmeRoads: ", cesme_total)
 
-  //let idx = 0; d
+  //let idx = 0;
   for (const feature of cesmeRoads.features) {
     //idx++;
     const name = feature?.properties?.name;
