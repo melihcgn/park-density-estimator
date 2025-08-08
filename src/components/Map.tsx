@@ -9,6 +9,7 @@ import { FeatureCollection, LineString } from 'geojson';
 import { RoadData } from '@/utils/labelParkingPossibility';
 import CurrentLocationMarker from './ui/CurrentLocation';
 import L from 'leaflet';
+import MapButtons from './ui/MapButtons';
 
 const redIcon = L.icon({
   iconUrl: '/red_marker_50x50.png', // public klasörüne koy
@@ -72,11 +73,12 @@ export default function Map() {
     <div className="h-full w-full">
       <MapInfoBox />
       <MapContainer center={marmarisPosition} zoom={13} className="h-full w-full z-0">
+        <MapButtons />
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-
+        
         <Marker position={marmarisPosition} icon={redIcon}>
           <Popup>Marmaris</Popup>
         </Marker>
@@ -99,7 +101,8 @@ export default function Map() {
             }}
             onEachFeature={(feature, layer) => {
               const name = feature?.properties?.name || 'İsimsiz Yol';
-              layer.bindPopup(`<b>${name}</b>`);
+              const color = roadColors[name] || '#888';
+              layer.bindPopup(`<b style="color:${color};">${name}</b>`);
               layer.on('click', function () {
                 layer.openPopup();
               });
