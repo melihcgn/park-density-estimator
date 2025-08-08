@@ -97,6 +97,13 @@ export default function Map() {
                 weight: 3
               };
             }}
+            onEachFeature={(feature, layer) => {
+              const name = feature?.properties?.name || 'İsimsiz Yol';
+              layer.bindPopup(`<b>${name}</b>`);
+              layer.on('click', function () {
+                layer.openPopup();
+              });
+            }}
           />
         )}
       </MapContainer>
