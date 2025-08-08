@@ -1,5 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+const blueIcon = L.icon({
+  iconUrl: '/marker-icon.png', // public klasörüne koy
+  iconSize: [25, 41], // orijinali: [25, 41]
+  iconAnchor: [9, 28], // popup konumu için
+  popupAnchor: [0, -28],
+  shadowUrl: '/marker-shadow.png', // opsiyonel, varsayılan shadow
+  shadowSize: [41, 41],
+  shadowAnchor: [13, 41],
+});
+
 
 const CurrentLocationMarker = () => {
   const [position, setPosition] = useState<[number, number] | null>(null);
@@ -29,6 +40,6 @@ const CurrentLocationMarker = () => {
     return () => clearInterval(interval); // Cleanup
   }, [map]);
 
-  return position ? <Marker position={position}><Popup>Mevcut Konumun</Popup></Marker> : null;
+  return position ? <Marker position={position} icon={blueIcon}><Popup>Mevcut Konumun</Popup></Marker> : null;
 };
 export default CurrentLocationMarker;
